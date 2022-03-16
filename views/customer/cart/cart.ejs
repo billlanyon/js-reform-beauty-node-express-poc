@@ -12,11 +12,21 @@
                         <li>
                             <%- include('includes/cart-item', { item: cartItem }) %>
                         </li>
-                    <% } %>
+                        <% } %>
                 </ul>
                 <div id="cart-total">
-                    <p>Total: $<span id="cart-total-price"><%= locals.cart.totalPrice.toFixed(2) %></span></p>
-                    <button class="btn">Buy Products</button>
+                    <p>Total: $<span id="cart-total-price">
+                            <%= locals.cart.totalPrice.toFixed(2) %>
+                        </span></p>
+
+                    <% if (locals.isAuth) { %>
+                        <form action="/orders" method="POST">
+                            <input type="hidden" name="_csrf" value="<%= locals.csrfToken %>">
+                            <button class="btn">Buy Products</button>
+                            <% } else { %>
+                                <p id="cart-total-fallback">Please log in to proceed and purchase the items.</p>
+                            <% } %>
+                        </form>
                 </div>
             </main>
             <%- include('../../shared/includes/footer') %>
